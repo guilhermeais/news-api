@@ -16,57 +16,6 @@ const moment = require("moment");
 const Newspapper = require("../../api/newspapper/utils/Newspapper");
 
 module.exports = {
-  // primeira forma
-  // "* */30 * * * *": async () => {
-  //   const knex = strapi.connections.default;
-  //   const newspapperService = strapi.query("newspapper");
-  //   const pageSize = 100;
-  //   console.log("i'm running at every 30 minutes");
-  //   try {
-  //     let lastPublishedAt =
-  //       (await knex("newspappers").max("publishedAt").first()).max ||
-  //       Date.now();
-  //     lastPublishedAt = moment(lastPublishedAt)
-  //       .add(1, "second")
-  //       .format("YYYY-MM-DD HH:mm:ss");
-  //     console.log(lastPublishedAt);
-  //     // console.log(moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"));
-  //     let allNewspappers = [];
-  //     const news = await newsapi.v2.everything({
-  //       q: "bitcoin",
-  //       from: lastPublishedAt,
-  //       language: "pt",
-  //       sortBy: "publishedAt",
-  //       page: 1,
-  //       pageSize,
-  //     });
-  //     allNewspappers.push(...news.articles);
-  //     const totalPages = Math.floor(news.totalResults / pageSize);
-  //     console.log(totalPages);
-  //     if (totalPages > 1) {
-  //       for (let i = 2; i <= totalPages; i++) {
-  //         const { articles } = await newsapi.v2.everything({
-  //           q: "bitcoin",
-  //           from: lastPublishedAt,
-  //           language: "pt",
-  //           sortBy: "publishedAt",
-  //           page: i,
-  //           pageSize,
-  //         });
-  //         allNewspappers.push(...articles);
-  //       }
-  //     }
-  //     allNewspappers = allNewspappers.filter(
-  //       (x, i) => allNewspappers.findIndex((y) => y.title == x.title) === i
-  //     );
-  //     for (const news of allNewspappers) {
-  //       const newspapper = Newspapper(news);
-  //       await newspapperService.create(newspapper);
-  //     }
-  //   } catch (error) {
-  //     console.log("some error ocurred", error);
-  //   }
-  // },
   // segunda forma
   "* */30 * * * *": async () => {
     const knex = strapi.connections.default;
@@ -82,13 +31,11 @@ module.exports = {
 
       lastPublished = moment(lastPublished).format("YYYY-MM-DD HH:mm:ss");
 
-      // console.log(lastPublished);
       const articles24HoursBefore = await knex("newspappers").where(
         "publishedAt",
         ">=",
         moment(lastPublished).subtract(24, "hour").format("YYYY-MM-DD HH:mm:ss")
       );
-      // console.log("article24HoursBefore", articles24HoursBefore);
 
       let allNewspappers = [];
       const news = await newsapi.v2.everything({
@@ -101,7 +48,7 @@ module.exports = {
       });
       allNewspappers.push(...news.articles);
       const totalPages = Math.floor(news.totalResults / pageSize);
-      // console.log(totalPages);
+
       if (totalPages > 1) {
         for (let i = 2; i <= totalPages; i++) {
           const { articles } = await newsapi.v2.everything({
@@ -119,7 +66,7 @@ module.exports = {
       allNewspappers = allNewspappers.filter(
         (x, i) => allNewspappers.findIndex((y) => y.title == x.title) === i
       );
-      // console.log(allNewspappers);
+
       for (const news of allNewspappers) {
         const newspapper = Newspapper(news);
 
