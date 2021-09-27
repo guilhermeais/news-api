@@ -21,68 +21,6 @@ module.exports = {
   },
   async fetch({ request }) {
     let { to, from } = request.query;
-    console.log(to, from);
-    const knex = strapi.connections.default;
-    const newspapperService = strapi.query("newspapper");
-    const pageSize = 100;
-
-    console.log("i'm running at every 25 minutes");
-    try {
-      // let lastPublishedAt =
-      //   (await knex("newspappers").max("publishedAt").first()).max ||
-      //   Date.now();
-
-      // lastPublishedAt = moment(lastPublishedAt)
-      //   .add(1, "second")
-      //   .format("YYYY-MM-DD HH:mm:ss");
-
-      // console.log(lastPublishedAt);
-      // console.log(moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"));
-      let allNewspappers = [];
-      const news = await newsapi.v2.everything({
-        q: "bitcoin",
-        to,
-        from,
-        language: "pt",
-        sortBy: "publishedAt",
-
-        page: 1,
-        pageSize,
-      });
-      allNewspappers.push(...news.articles);
-      const totalPages = Math.floor(news.totalResults / pageSize);
-      console.log(totalPages);
-      if (totalPages > 1) {
-        for (let i = 2; i <= totalPages; i++) {
-          const { articles } = await newsapi.v2.everything({
-            q: "bitcoin",
-            from: lastPublishedAt,
-            to,
-            from,
-            language: "pt",
-            sortBy: "publishedAt",
-            page: i,
-            pageSize,
-          });
-
-          allNewspappers.push(...articles);
-        }
-      }
-      allNewspappers = allNewspappers.filter(
-        (x, i) => allNewspappers.findIndex((y) => y.title == x.title) === i
-      );
-
-      for (const news of allNewspappers) {
-        const newspapper = Newspapper(news);
-        await newspapperService.create(newspapper);
-      }
-    } catch (error) {
-      console.log("some error ocurred", error);
-    }
-  },
-
-  async fetch2({ request }) {
-    let { to, from } = request.query;
     const knex = strapi.connections.default;
     const newspapperService = strapi.query("newspapper");
     const pageSize = 100;
