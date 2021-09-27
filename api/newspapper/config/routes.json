@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/newspapper",
+      "handler": "newspapper.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/newspapper/fetch",
+      "handler": "newspapper.fetch",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/newspapper/fetch2",
+      "handler": "newspapper.fetch2",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/newspapper/testNotification",
+      "handler": "newspapper.testNotification",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/newspapper",
+      "handler": "newspapper.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/newspapper",
+      "handler": "newspapper.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
