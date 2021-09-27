@@ -138,13 +138,6 @@ module.exports = {
       // console.log(allNewspappers);
       for (const news of allNewspappers) {
         const newspapper = Newspapper(news);
-        // console.log(
-        //   newspapper,
-        //   "ja tem o hash? ",
-        //   articles24HoursBefore.some(
-        //     (article) => article.hash == newspapper.hash
-        //   )
-        // );
         if (
           !articles24HoursBefore.some(
             (article) => article.hash == newspapper.hash
@@ -158,6 +151,7 @@ module.exports = {
     }
   },
   async testNotification() {
+    const newspapperService = strapi.query("newspapper");
     const newspapper = Newspapper({
       title: "teste socketio notification",
       description: "lorem ipsum",
