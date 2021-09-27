@@ -46,7 +46,7 @@ module.exports = {
       const news = await newsapi.v2.everything({
         q: "bitcoin",
         from: from ? from : lastPublished,
-        to,
+        to: to ? to : "",
         language: "pt",
         sortBy: "publishedAt",
         page: 1,
@@ -60,7 +60,7 @@ module.exports = {
           const { articles } = await newsapi.v2.everything({
             q: "bitcoin",
             from: from ? from : lastPublished,
-            to,
+            to: to ? to : "",
             language: "pt",
             sortBy: "publishedAt",
             page: i,
